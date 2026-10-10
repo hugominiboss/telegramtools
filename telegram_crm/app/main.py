@@ -17,6 +17,7 @@ from sqlalchemy import text
 from app.api.routes_admin import router as admin_router
 from app.api.routes_auth import accounts_router, router as auth_router
 from app.api.routes_client import router as client_router
+from app.api.routes_lists import router as lists_router
 from app.api.routes_onboarding import router as onboarding_router
 from app.core.session_manager import LoginError
 from app.core.status import status
@@ -63,11 +64,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Rotas de autenticação, admin (contas/workers), client (extração/isca) e onboarding
+# Rotas de autenticação, admin (contas/workers), client (extração/isca),
+# listas/segmentação e onboarding
 app.include_router(auth_router)
 app.include_router(accounts_router)
 app.include_router(admin_router)
 app.include_router(client_router)
+app.include_router(lists_router)
 app.include_router(onboarding_router)
 
 # Interface de controle servida em /

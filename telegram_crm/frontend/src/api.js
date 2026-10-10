@@ -114,6 +114,35 @@ export const api = {
     ).toString()
     return request(`/admin/groups/${id}/members${qs ? `?${qs}` : ''}`)
   },
+
+  // Listas e segmentação
+  lists: (params = {}) => {
+    const qs = new URLSearchParams(
+      Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== '')
+    ).toString()
+    return request(`/lists${qs ? `?${qs}` : ''}`)
+  },
+  createList: (data) => request('/lists', { method: 'POST', body: data }),
+  listDetail: (id) => request(`/lists/${id}`),
+  updateList: (id, data) => request(`/lists/${id}`, { method: 'PATCH', body: data }),
+  deleteList: (id) => request(`/lists/${id}`, { method: 'DELETE' }),
+  segment: (data) => request('/lists/segment', { method: 'POST', body: data }),
+  previewFilter: (params = {}) => {
+    const qs = new URLSearchParams(
+      Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== '')
+    ).toString()
+    return request(`/lists/preview${qs ? `?${qs}` : ''}`)
+  },
+  listMembers: (id, params = {}) => {
+    const qs = new URLSearchParams(
+      Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== '')
+    ).toString()
+    return request(`/lists/${id}/members${qs ? `?${qs}` : ''}`)
+  },
+  addListMembers: (id, memberIds) =>
+    request(`/lists/${id}/members`, { method: 'POST', body: { member_ids: memberIds } }),
+  removeListMembers: (id, memberIds) =>
+    request(`/lists/${id}/members`, { method: 'DELETE', body: { member_ids: memberIds } }),
 }
 
 export default api

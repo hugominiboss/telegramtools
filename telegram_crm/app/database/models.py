@@ -161,7 +161,13 @@ class MemberList(Base):
     )
 
     members: Mapped[list["Member"]] = relationship(
-        secondary=lambda: list_members, back_populates="lists", lazy="selectin"
+        secondary=lambda: list_members,
+        back_populates="lists",
+        lazy="selectin",
+        # ``list_members`` tem ON DELETE CASCADE no schema: delegar ao banco
+        # evita que o ORM tente apagar as linhas secundárias com contagem
+        # dessincronizada (StaleDataError) quando o worker usa Core DML.
+        passive_deletes=True,
     )
     campaigns: Mapped[list["Campaign"]] = relationship(
         back_populates="target_list", lazy="selectin", passive_deletes=True

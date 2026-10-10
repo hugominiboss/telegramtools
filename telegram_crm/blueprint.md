@@ -147,14 +147,14 @@ Scraper  →  Audit  →  Warmup  →  Conversion (DM / Adder)
   - **DoD:** após harvesting, `logs` registra a ação com `success`.
 
 ### FASE 3 — Filtragem e Gestão de Listas
-- [ ] **Tarefa 3.1** — `workers/filters.py`: motor de critérios (`has_username`, `status`, `last_seen_after`, `source_group`, `not_in_list`).
-  - **DoD:** unitário: dataset fixo de 6 membros → cada filtro devolve o subconjunto esperado.
-- [ ] **Tarefa 3.2** — Aplicar filtro e materializar em `MemberList` (segmentação).
-  - **DoD:** `POST /lists/segment` cria lista com os membros filtrados; contagem bate com o filtro.
-- [ ] **Tarefa 3.3** — CRUD de listas: `POST/GET/DELETE /lists` (+ rename).
-  - **DoD:** criar→201, listar→contém, renomear→200, excluir→204 e linhas de `list_members` removidas.
-- [ ] **Tarefa 3.4** — Membros da lista: `GET/POST/DELETE /lists/{id}/members`.
-  - **DoD:** adicionar 2 membros → `GET` retorna 2; remover 1 → retorna 1; idempotente (adicionar 2× = 1 linha).
+- [x] **Tarefa 3.1** — `workers/filters.py`: motor de critérios (`has_username`, `status`, `last_seen_after`, `source_group`, `not_in_list`).
+  - **DoD:** unitário: dataset fixo de 6 membros → cada filtro devolve o subconjunto esperado. **Prova: `tests/test_filters.py` (13 filtros AND/OR com subconjunto exato).**
+- [x] **Tarefa 3.2** — Aplicar filtro e materializar em `MemberList` (segmentação).
+  - **DoD:** `POST /lists/segment` cria lista com os membros filtrados; contagem bate com o filtro. **Prova: `tests/test_filters.py` (3 membros, contagem == filtro; idempotente; `replace` reflete/une).**
+- [x] **Tarefa 3.3** — CRUD de listas: `POST/GET/DELETE /lists` (+ rename).
+  - **DoD:** criar→201, listar→contém, renomear→200, excluir→204 e linhas de `list_members` removidas. **Prova: `tests/test_filters.py` (+ 409 em nome duplicado, 404 em id inexistente, `members` intactos).**
+- [x] **Tarefa 3.4** — Membros da lista: `GET/POST/DELETE /lists/{id}/members`.
+  - **DoD:** adicionar 2 membros → `GET` retorna 2; remover 1 → retorna 1; idempotente (adicionar 2× = 1 linha). **Prova: `tests/test_filters.py`.**
 
 ### FASE 4 — Conversão (DM / Member Adder)
 - [x] **Tarefa 4.1** — `workers/sender.py`: fila de leads `pending`, render de template (`{first_name}`/`{username}`) e loop com rate-limit.
